@@ -2,7 +2,6 @@ import uvicorn
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from database import engine, Base
 from logger import logger
 from auth.router import router as auth_router
 from contacts.router import router as contacts_router
@@ -10,9 +9,6 @@ from contacts.router import router as contacts_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Ініціалізація бази даних...")
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
     logger.info("Додаток успішно запущено.")
     yield
     logger.info("Зупинка додатка...")
